@@ -1,3 +1,43 @@
-prefix_rule(pattern=["uv", "run", "pytest"], decision="allow")
-prefix_rule(pattern=["uv", "run", "ruff"], decision="allow")
-prefix_rule(pattern=["uv", "run", "ty"], decision="allow")
+prefix_rule(
+    pattern = ["uv", "run", ["pytest", "ruff", "ty"]],
+    decision = "allow",
+    justification = "Code Quality Checks",
+)
+
+prefix_rule(
+    pattern = ["sudo"],
+    decision = "forbidden",
+    justification = "Do not escalate through sudo from Codex.",
+)
+
+prefix_rule(
+    pattern = ["rm", ["-rf", "-fr"]],
+    decision = "forbidden",
+    justification = "Destructive recursive deletes must be approved explicitly.",
+)
+
+prefix_rule(
+    pattern = [["pip", "pip3"]],
+    decision = "forbidden",
+    justification = "Use `uv` instead of bare pip.",
+)
+
+prefix_rule(
+    pattern = ["gh", "api"],
+    decision = "allow",
+    justification = "Routine GitHub API inspection is trusted.",
+    match = [
+        "gh api repos/openai/codex",
+    ],
+)
+
+prefix_rule(
+    pattern = ["rtk"],
+    decision = "allow",
+    justification = "Allow trusted RTK-prefixed commands across tools.",
+    match = [
+        "rtk git status",
+        "rtk cargo xtask test",
+        "rtk npm run build",
+    ],
+)
