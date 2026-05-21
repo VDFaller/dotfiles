@@ -1,5 +1,5 @@
 [user]
-	signingkey = REDACTED
+	signingkey = REDACTED_GPG_SIGNING_KEY
 	name = Vince Faller
 	email = vdfaller@gmail.com
 [commit]

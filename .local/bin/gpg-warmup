@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf 'gpg cache warmup\n' |
+  gpg --local-user REDACTED_GPG_SIGNING_KEY --detach-sign --armor >/dev/null

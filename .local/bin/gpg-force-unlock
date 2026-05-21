@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+gpgconf --kill gpg-agent
+
+printf 'gpg cache reset\n' |
+  gpg --local-user REDACTED_GPG_SIGNING_KEY --detach-sign --armor >/dev/null
