@@ -1,5 +1,6 @@
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "medium"
+service_tier = "default"
 approval_policy = "on-request"
 approvals_reviewer = "guardian_subagent"
 sandbox_mode = "workspace-write"
@@ -13,3 +14,4 @@ terminal_resize_reflow = true
 external_migration = true
 prevent_idle_sleep = true
 goals = true
+remote_control = true
