@@ -1,0 +1,23 @@
+# Runtime state
+history.jsonl
+stats-cache.json
+mcp-needs-auth-cache.json
+.credentials.json
+.last-*
+
+# Caches and generated state
+cache/
+file-history/
+ide/
+projects/
+session-env/
+sessions/
+shell-snapshots/
+tasks/
+paste-cache/
+backups/
+plans/
+
+# Installed plugin payloads and local marketplace caches
+plugins/
+
