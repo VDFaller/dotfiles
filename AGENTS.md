@@ -30,3 +30,6 @@ Anti-patterns:
 "Let's defer tests to a follow-up PR." (Tests are the cheapest lake to boil.)
 "This would take 2 weeks." (Say: "2 weeks human / ~1 hour AI-assisted.")
 Read more: https://garryslist.org/posts/boil-the-ocean
+
+## Markdown Recommendations
+* Mermaid is good.  Use it where diagrams are needed. 
