@@ -15,6 +15,14 @@ Bare pip, pip3, and python3 invocations are blocked by a PreToolUse hook. Always
 * `uv add <package>` — add a dependency to a project. You're allowed to add dependencies if you think it truly is the best way to solve a problem.
 * `uvx <tool>` — run a one-off tool (e.g. `uvx ruff check`)
 
+### Preferred Python Libraries
+* typer: CLI
+* polars: dataframes
+* pytorch: modeling
+* plotly: visualization
+* pydantic: data validation
+* pytest, ruff, ty, pre-commit: checking
+
 ## General Ethos
 
 ### 1. Boil the Lake
