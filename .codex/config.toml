@@ -1,5 +1,5 @@
-model = "gpt-5.4"
-model_reasoning_effort = "high"
+model = "gpt-5.6-sol"  # based of artificial analytics' intelligence/cost of task benchmark
+model_reasoning_effort = "medium"  # https://artificialanalysis.ai/?cost=intelligence-vs-cost-per-task
 service_tier = "default"
 approval_policy = "on-request"
 approvals_reviewer = "guardian_subagent"
