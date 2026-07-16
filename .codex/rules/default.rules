@@ -41,3 +41,15 @@ prefix_rule(
         "rtk npm run build",
     ],
 )
+
+# GitHub CLI authentication is stored in the host keyring and can appear invalid
+# inside the sandbox. Always ask before checking it on the host.
+prefix_rule(
+    pattern = ["gh", "auth", "status"],
+    decision = "prompt",
+    justification = "GitHub CLI authentication must be checked against the host keyring, not inside the sandbox",
+    match = [
+        "gh auth status",
+        "gh auth status -h github.com",
+    ],
+)

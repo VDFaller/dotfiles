@@ -41,6 +41,3 @@ Read more: https://garryslist.org/posts/boil-the-ocean
 
 ## Markdown Recommendations
 * Mermaid is good.  Use it where diagrams are needed. 
-
-## Misc Screwups
-* Always invoke `gh auth status` with sandbox escalation on the first attempt. Never treat a sandboxed `gh auth status` result as authoritative.
