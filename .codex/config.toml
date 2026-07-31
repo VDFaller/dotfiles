@@ -15,3 +15,4 @@ external_migration = true
 prevent_idle_sleep = true
 goals = true
 remote_control = true
+multi_agent_v2 = true
