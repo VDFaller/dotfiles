@@ -16,3 +16,8 @@ prevent_idle_sleep = true
 goals = true
 remote_control = true
 multi_agent_v2 = true
+
+
+[agents]
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "medium"
