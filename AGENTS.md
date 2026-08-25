@@ -41,3 +41,13 @@ Read more: https://garryslist.org/posts/boil-the-ocean
 
 ## Markdown Recommendations
 * Mermaid is good.  Use it where diagrams are needed. 
+
+## Plan-mode delegation
+
+When in Plan mode:
+
+- Delegate repository exploration to one or more `explorer` or other appropriate subagents.
+- Do not perform broad repository exploration in the main thread.
+- Ask subagents to return concise, evidence-backed summaries with relevant file paths and symbols.
+- Wait for delegated results, then synthesize them into the plan.
+- The main thread may inspect only the minimum context needed to frame the request or reconcile conflicting findings.
