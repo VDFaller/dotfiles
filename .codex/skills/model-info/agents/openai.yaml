@@ -1,0 +1,7 @@
+interface:
+  display_name: "Model Info"
+  short_description: "Report the active model and reasoning effort"
+  default_prompt: "Use $model-info to report the model currently running this session."
+
+policy:
+  allow_implicit_invocation: true
