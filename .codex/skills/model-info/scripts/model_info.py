@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report the effective model metadata for the current Codex thread."""
+"""Report effective model metadata for the current Codex or dbt-wizard thread."""
 
 from __future__ import annotations
 
@@ -17,7 +17,14 @@ def _codex_home() -> Path:
     return Path(configured).expanduser() if configured else Path.home() / ".codex"
 
 
-def _state_databases(codex_home: Path) -> list[Path]:
+def _state_home() -> Path:
+    """Return the state directory for the active harness."""
+    if os.environ.get("DBT_WIZARD_THREAD_ID"):
+        return Path.home() / ".dbt" / "wizard"
+    return _codex_home()
+
+
+def _state_databases(state_home: Path) -> list[Path]:
     """Return plausible state databases, newest first."""
     candidates = {
         path
@@ -27,7 +34,7 @@ def _state_databases(codex_home: Path) -> list[Path]:
             "state.sqlite3",
             "state_*.sqlite3",
         )
-        for path in codex_home.glob(pattern)
+        for path in state_home.glob(pattern)
         if path.is_file()
     }
     return sorted(candidates, key=lambda path: path.stat().st_mtime_ns, reverse=True)
@@ -80,10 +87,10 @@ def _read_thread(database: Path, thread_id: str) -> dict[str, str] | None:
         connection.close()
 
 
-def _result(thread_id: str, codex_home: Path) -> dict[str, str]:
-    databases = _state_databases(codex_home)
+def _result(thread_id: str, state_home: Path) -> dict[str, str]:
+    databases = _state_databases(state_home)
     if not databases:
-        raise RuntimeError(f"no Codex state database found under {codex_home}")
+        raise RuntimeError(f"no state database found under {state_home}")
 
     for database in databases:
         row = _read_thread(database, thread_id)
@@ -93,17 +100,34 @@ def _result(thread_id: str, codex_home: Path) -> dict[str, str]:
             return row
 
     raise RuntimeError(
-        f"thread {thread_id} was not found in Codex state databases under {codex_home}"
+        f"thread {thread_id} was not found in state databases under {state_home}"
     )
+
+
+def _environment_thread_id() -> str | None:
+    """Return the active thread ID from the supported harness environments."""
+    # Prefer the dbt-wizard-specific value when both are present, since it is
+    # the most specific identifier for that runtime.
+    for variable in ("DBT_WIZARD_THREAD_ID", "CODEX_THREAD_ID"):
+        thread_id = os.environ.get(variable)
+        if thread_id:
+            return thread_id
+    return None
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Report the effective model and reasoning effort for a Codex thread."
+        description=(
+            "Report the effective model and reasoning effort for a Codex or "
+            "dbt-wizard thread."
+        )
     )
     parser.add_argument(
         "--thread-id",
-        help="Thread ID to inspect; defaults to CODEX_THREAD_ID.",
+        help=(
+            "Thread ID to inspect; defaults to DBT_WIZARD_THREAD_ID, "
+            "then CODEX_THREAD_ID."
+        ),
     )
     parser.add_argument(
         "--json",
@@ -112,9 +136,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    thread_id = args.thread_id or os.environ.get("CODEX_THREAD_ID")
+    thread_id = args.thread_id or _environment_thread_id()
     if not thread_id:
-        message = "CODEX_THREAD_ID is not set; cannot identify the active Codex thread"
+        message = (
+            "DBT_WIZARD_THREAD_ID and CODEX_THREAD_ID are not set; "
+            "cannot identify the active thread"
+        )
         if args.json:
             print(json.dumps({"status": "unavailable", "reason": message}))
         else:
@@ -122,7 +149,7 @@ def main() -> int:
         return 1
 
     try:
-        result = _result(thread_id, _codex_home())
+        result = _result(thread_id, _state_home())
     except RuntimeError as error:
         if args.json:
             print(json.dumps({"status": "unavailable", "reason": str(error)}))

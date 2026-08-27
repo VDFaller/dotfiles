@@ -18,7 +18,12 @@ For Codex or dbt-wizard sessions:
 2. Treat the `model` and `reasoning_effort` values from the matching thread row as authoritative for the current session.
 3. If the command says `unavailable`, say that the active model could not be verified. Do not substitute values from `config.toml`, model catalogs, prior turns, or guesses.
 
-The helper uses `CODEX_THREAD_ID` to identify the active thread and reads `~/.codex/state_*.sqlite` read-only. It intentionally fails when that database or thread record is unavailable.
+The helper uses `DBT_WIZARD_THREAD_ID` for dbt-wizard sessions, falling back to
+`CODEX_THREAD_ID` for Codex sessions. It reads the matching state database
+read-only: dbt-wizard uses `~/.dbt/wizard/state_*.sqlite`, while Codex uses
+`~/.codex/state_*.sqlite` (or `CODEX_HOME` when configured). If both variables
+are set, the dbt-wizard value takes precedence. It intentionally fails when
+the state database or thread record is unavailable.
 
 For Claude Code, report the model name provided by Claude's runtime. Claude may not expose a reasoning-effort setting; in that case say `reasoning effort: not exposed by Claude Code` rather than inventing a level.
 
