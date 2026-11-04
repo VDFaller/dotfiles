@@ -6,6 +6,8 @@ tap "rtk-ai/tap"
 brew "rtk-ai/tap/rtk"
 # JavaScript runtime and toolkit
 brew "bun"
+# Node.js runtime and npm tooling
+brew "node"
 # Graphical GPG passphrase prompt
 brew "pinentry-mac"
 # GNU Privacy Guard (OpenPGP)
