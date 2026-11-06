@@ -1,0 +1,55 @@
+{
+  "skill_name": "daily-headsup",
+  "evals": [
+    {
+      "id": 1,
+      "name": "cold-start",
+      "prompt": "morning \u2014 what do I need to do today?",
+      "expected_output": "First run: creates a tracker, produces a prioritized brief across Notion, GitHub and Calendar with links, puts ancient PRs in Close-or-revive, writes tracker rows + log entry.",
+      "files": [],
+      "tracker": "Claude Daily Headsup (eval-1b)",
+      "assertions": [
+        "Brief covers all three sources (Calendar, GitHub, Notion) or names any source that was unavailable",
+        "Brief opens with a 'Top 3' synthesis for today",
+        "Every Notion page and GitHub item named in the brief is linked",
+        "The 1100+-day-old spark-utils#37 PR is not in the Top 3 and is placed in a close-or-revive style bucket",
+        "Brief is 60 lines or fewer",
+        "A private tracker page was created holding only flagged items (12 or fewer Watching entries, not every owned initiative)",
+        "A log entry dated 2026-11-06 was written to the tracker page",
+        "ade-bench#68 (unanswered 'can this be closed?' question) is surfaced as waiting on Vince"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "diff-against-history",
+      "prompt": "catch me up, what am I letting slip?",
+      "expected_output": "Uses seeded tracker: flags LICENSE PR as repeat offender (5th time), marks dbt-checks#3 resolved after verifying it closed, keeps 'Webinars and blog posts' in Rotting, excludes the dismissed 'Segment customers' item, updates counts.",
+      "files": [],
+      "tracker": "Claude Daily Headsup (eval-2b)",
+      "assertions": [
+        "dbt-lint-yaml#59 (LICENSE PR) is called out as a repeat offender / flagged multiple times",
+        "dbt-checks#3 is reported as resolved/closed (verified, not assumed)",
+        "Dismissed item 'Segment customers by V2 migration readiness' does not appear in the brief",
+        "'Webinars and blog posts' appears under rotting / slipping",
+        "Tracker updated: #59 flagged 5 and dbt-checks#3 removed from Watching",
+        "Every Notion page and GitHub item named in the brief is linked",
+        "ade-bench#68 (unanswered 'can this be closed?' question) is surfaced as waiting on Vince"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "webinar-prep",
+      "prompt": "I've got the v2 community webinar coming up \u2014 give me my headsup but tell me what I need to prep.",
+      "expected_output": "Brief that connects calendar events to the Notion webinar pages (Webinar Brief: dbt v2 Community, Webinars and blog posts, workback plan) and lists concrete prep items.",
+      "files": [],
+      "tracker": "Claude Daily Headsup (eval-3b)",
+      "assertions": [
+        "Brief links the Notion webinar planning pages (Webinar Brief: dbt v2 Community and/or the workback plan)",
+        "Brief lists at least 3 concrete webinar prep items",
+        "Brief states the webinar's calendar date/time, or explicitly says it is not on the calendar",
+        "Brief still includes a Top 3 / general headsup beyond the webinar",
+        "Every Notion page and GitHub item named in the brief is linked"
+      ]
+    }
+  ]
+}
