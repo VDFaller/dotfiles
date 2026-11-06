@@ -7,6 +7,12 @@
 * Python: uv-managed virtual environments; conda/miniforge not used
 * Rust: rustup toolchain; cargo for package management
 
+## Prefer established solutions
+
+Before implementing substantial functionality, check whether a mature, trusted tool or package already solves the problem. Tell me about viable options and recommend one when appropriate.
+
+Do not recreate established libraries, package managers, environment managers, validation frameworks, or similar infrastructure unless I explicitly ask for a custom implementation. Consider security, maintenance, licensing, portability, and project constraints before adding dependencies.
+
 ## Python Package Management
 Bare pip, pip3, and python3 invocations are blocked by a PreToolUse hook. Always use:
 
