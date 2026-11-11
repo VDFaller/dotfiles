@@ -12,43 +12,73 @@
         "Brief covers all three sources (Calendar, GitHub, Notion) or names any source that was unavailable",
         "Brief opens with a 'Top 3' synthesis for today",
         "Every Notion page and GitHub item named in the brief is linked",
-        "The 1100+-day-old spark-utils#37 PR is not in the Top 3 and is placed in a close-or-revive style bucket",
+        "The 1100+-day-old repo-b#37 PR is not in the Top 3 and is placed in a close-or-revive style bucket",
         "Brief is 60 lines or fewer",
         "A private tracker page was created holding only flagged items (12 or fewer Watching entries, not every owned initiative)",
         "A log entry dated 2026-11-06 was written to the tracker page",
-        "ade-bench#68 (unanswered 'can this be closed?' question) is surfaced as waiting on Vince"
+        "repo-d#68 (unanswered 'can this be closed?' question) is surfaced as waiting on the user"
       ]
     },
     {
       "id": 2,
       "name": "diff-against-history",
       "prompt": "catch me up, what am I letting slip?",
-      "expected_output": "Uses seeded tracker: flags LICENSE PR as repeat offender (5th time), marks dbt-checks#3 resolved after verifying it closed, keeps 'Webinars and blog posts' in Rotting, excludes the dismissed 'Segment customers' item, updates counts.",
+      "expected_output": "Uses seeded tracker: flags LICENSE PR as repeat offender (5th time), marks repo-c#3 resolved after verifying it closed, keeps 'Event and blog posts' in Rotting, excludes the dismissed example item, updates counts.",
       "files": [],
       "tracker": "Claude Daily Headsup (eval-2b)",
       "assertions": [
-        "dbt-lint-yaml#59 (LICENSE PR) is called out as a repeat offender / flagged multiple times",
-        "dbt-checks#3 is reported as resolved/closed (verified, not assumed)",
-        "Dismissed item 'Segment customers by V2 migration readiness' does not appear in the brief",
-        "'Webinars and blog posts' appears under rotting / slipping",
-        "Tracker updated: #59 flagged 5 and dbt-checks#3 removed from Watching",
+        "repo-a#59 (LICENSE PR) is called out as a repeat offender / flagged multiple times",
+        "repo-c#3 is reported as resolved/closed (verified, not assumed)",
+        "Dismissed item 'Example dismissed item' does not appear in the brief",
+        "'Event and blog posts' appears under rotting / slipping",
+        "Tracker updated: #59 flagged 5 and repo-c#3 removed from Watching",
         "Every Notion page and GitHub item named in the brief is linked",
-        "ade-bench#68 (unanswered 'can this be closed?' question) is surfaced as waiting on Vince"
+        "repo-d#68 (unanswered 'can this be closed?' question) is surfaced as waiting on the user"
       ]
     },
     {
       "id": 3,
-      "name": "webinar-prep",
-      "prompt": "I've got the v2 community webinar coming up \u2014 give me my headsup but tell me what I need to prep.",
-      "expected_output": "Brief that connects calendar events to the Notion webinar pages (Webinar Brief: dbt v2 Community, Webinars and blog posts, workback plan) and lists concrete prep items.",
+      "name": "event-prep",
+      "prompt": "I've got the launch event coming up \u2014 give me my headsup but tell me what I need to prep.",
+      "expected_output": "Brief that connects calendar events to the Notion event pages (Event Brief, Event and blog posts, workback plan) and lists concrete prep items.",
       "files": [],
       "tracker": "Claude Daily Headsup (eval-3b)",
       "assertions": [
-        "Brief links the Notion webinar planning pages (Webinar Brief: dbt v2 Community and/or the workback plan)",
-        "Brief lists at least 3 concrete webinar prep items",
-        "Brief states the webinar's calendar date/time, or explicitly says it is not on the calendar",
-        "Brief still includes a Top 3 / general headsup beyond the webinar",
+        "Brief links the Notion event planning pages (Event Brief and/or the workback plan)",
+        "Brief lists at least 3 concrete event prep items",
+        "Brief states the event's calendar date/time, or explicitly says it is not on the calendar",
+        "Brief still includes a Top 3 / general headsup beyond the event",
         "Every Notion page and GitHub item named in the brief is linked"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "slack-open-loops",
+      "prompt": "morning \u2014 anything in Slack I owe people or promised and forgot?",
+      "expected_output": "Brief includes Slack section items: threads where someone else spoke last, his unfulfilled commitments, and a key-channel digest or a note that none are configured. Read-only; ledger uses slack: keys.",
+      "files": [],
+      "tracker": "Claude Daily Headsup (eval-4)",
+      "assertions": [
+        "Brief draws on Slack, or names Slack as unavailable",
+        "At least one Slack item is a thread where someone else spoke last, linked to its Slack permalink",
+        "Any 'you said you'd\u2026' item is backed by a message from the user and checked for later follow-up",
+        "No message was sent, drafted, scheduled or reacted to in Slack",
+        "Tracker ledger entries for Slack items use `slack:<channel-id>:<thread-ts>` keys",
+        "Key channels are summarized in at most one line each, or the brief notes that none are configured"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "notion-mentions",
+      "prompt": "catch me up \u2014 did anyone mention me or ask me something in Notion that I haven't seen?",
+      "expected_output": "Brief surfaces Notion pages/comments authored by others that mention or need the user, linked, as waiting on him; not just pages he edited.",
+      "files": [],
+      "tracker": "Claude Daily Headsup (eval-5)",
+      "assertions": [
+        "Brief includes at least one Notion page or comment that someone else authored and that mentions or asks something of the user",
+        "Every Notion page named is linked",
+        "Mention items are keyed notion:<page-id> in the tracker and not duplicated if already present",
+        "Pages where the user is only an author/attendee credit are not listed as needing action"
       ]
     }
   ]
