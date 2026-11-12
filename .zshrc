@@ -7,3 +7,6 @@ alias dbtf="$HOMEBREW_PREFIX/opt/dbt/bin/dbt"
 alias dbtc="$HOME/repos/ft_analytics/.venv/bin/dbt"
 alias dbtd="$HOME/repos/dbt-fusion/target/debug/dbt"
 alias dbtr="$HOME/repos/dbt-fusion/target/release/dbt"
+
+# Default dbt static analysis mode (replaces --static-analysis strict)
+export DBT_STATIC_ANALYSIS=strict
