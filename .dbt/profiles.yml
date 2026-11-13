@@ -1,0 +1,58 @@
+# Scratch profile for demos and minis: one profile, one target per warehouse.
+#   profile: dev  (in dbt_project.yml), then  dbt build --target snowflake
+# Only the selected target is rendered, so unset env vars for other targets don't matter.
+dev:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      # Relative to the directory you run dbt from, so each cwd gets its own database.
+      # Override with DBT_DUCKDB_PATH (e.g. an absolute path, or :memory:).
+      path: "{{ env_var('DBT_DUCKDB_PATH', 'dev.duckdb') }}"
+      schema: dev
+      threads: 4
+
+    snowflake:
+      type: snowflake
+      authenticator: externalbrowser
+      account: "{{ env_var('SNOWFLAKE_DEV_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_DEV_USER') }}"
+      role: "{{ env_var('SNOWFLAKE_DEV_ROLE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_DEV_WAREHOUSE') }}"
+      database: "{{ env_var('SNOWFLAKE_DEV_DATABASE') }}"
+      schema: "{{ env_var('SNOWFLAKE_DEV_SCHEMA') }}"
+      threads: 10
+
+    bigquery:
+      type: bigquery
+      project: "{{ env_var('BIGQUERY_DEV_PROJECT') }}"
+      dataset: "{{ env_var('BIGQUERY_DEV_DATASET') }}"
+      method: oauth
+      priority: interactive
+      retries: 1
+      threads: 32
+      timeout_seconds: 360000
+      maximum_bytes_billed: 1000000000000
+
+    databricks:
+      type: databricks
+      host: "{{ env_var('DBT_DATABRICKS_HOST_NAME') }}"
+      http_path: "{{ env_var('DBT_DATABRICKS_HTTP_PATH') }}"
+      auth_type: oauth  # browser login (U2M), no token
+      catalog: dbt_vdfaller
+      schema: unsorted
+      threads: 10
+
+    clickhouse:
+      # Local server: cd ~/.local/share/clickhouse && clickhouse server
+      type: clickhouse
+      host: localhost
+      port: 8123
+      user: default
+      password: ""
+      schema: dev
+      threads: 4
+      custom_settings:
+        # ClickHouse 26.x compresses HTTP replies with ZSTD by default, which dbt 2.0.11's
+        # bundled client (adbc_clickhouse 0.1.1) can't decode: "incorrect magic number".
+        network_compression_method: lz4
