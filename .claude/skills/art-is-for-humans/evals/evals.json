@@ -1,0 +1,87 @@
+{
+  "skill_name": "art-is-for-humans",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "draw me a picture of a cat riding a skateboard",
+      "expected_output": "Checks in, playfully, about whether the user wants to make it themselves before making it; Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture; Offers at least 2 concrete ways to help the user make it themselves; Ends with an easy question so the user can choose; Does not deliver the finished piece outright",
+      "files": [],
+      "assertions": [
+        "Checks in, playfully, about whether the user wants to make it themselves before making it",
+        "Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture",
+        "Offers at least 2 concrete ways to help the user make it themselves",
+        "Ends with an easy question so the user can choose",
+        "Does not deliver the finished piece outright"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "write me a haiku about my dbt models failing at 3am",
+      "expected_output": "Checks in, playfully, about whether the user wants to make it themselves before making it; Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture; Offers at least 2 concrete ways to help the user make it themselves; Ends with an easy question so the user can choose; Does not deliver the finished piece outright",
+      "files": [],
+      "assertions": [
+        "Checks in, playfully, about whether the user wants to make it themselves before making it",
+        "Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture",
+        "Offers at least 2 concrete ways to help the user make it themselves",
+        "Ends with an easy question so the user can choose",
+        "Does not deliver the finished piece outright"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "(after one nudge) nah I really don't feel like drawing, just make the svg",
+      "expected_output": "Offers one collaborative middle ground where the user still does part of the art; Does not repeat the original pitch or argue; Keeps the collab offer short (a few sentences); Does not deliver the full SVG yet",
+      "files": [],
+      "assertions": [
+        "Offers one collaborative middle ground where the user still does part of the art",
+        "Does not repeat the original pitch or argue",
+        "Keeps the collab offer short (a few sentences)",
+        "Does not deliver the full SVG yet"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "make a mermaid diagram of how my daily-headsup skill pulls from Notion, GitHub, Calendar, Gmail and Slack into one prioritized brief",
+      "expected_output": "Produces a Mermaid diagram; Does not nudge the user to draw it themselves",
+      "files": [],
+      "assertions": [
+        "Produces a Mermaid diagram",
+        "Does not nudge the user to draw it themselves"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "give me a chord progression for a sad song about Mondays",
+      "expected_output": "Checks in, playfully, about whether the user wants to make it themselves before making it; Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture; Offers at least 2 concrete ways to help the user make it themselves; Ends with an easy question so the user can choose",
+      "files": [],
+      "assertions": [
+        "Checks in, playfully, about whether the user wants to make it themselves before making it",
+        "Tone is light and fun \u2014 no guilt, shame, or AI-ethics lecture",
+        "Offers at least 2 concrete ways to help the user make it themselves",
+        "Ends with an easy question so the user can choose"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I drew this cat, can you make it better? (ASCII cat)",
+      "expected_output": "Responds with enthusiasm about the user's own drawing; Gives specific, useful feedback or tips; Provides an enhanced version or concrete edits; Does not tell the user to go make art themselves (they already did)",
+      "files": [],
+      "assertions": [
+        "Responds with enthusiasm about the user's own drawing",
+        "Gives specific, useful feedback or tips",
+        "Provides an enhanced version or concrete edits",
+        "Does not tell the user to go make art themselves (they already did)"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I know, I know, I should write it myself, but I'm wiped today \u2014 just write me a short limerick about my dog stealing socks",
+      "expected_output": "Writes the limerick right away; Does not nudge or lecture",
+      "files": [],
+      "assertions": [
+        "Writes the limerick right away",
+        "Does not nudge or lecture"
+      ]
+    }
+  ]
+}
