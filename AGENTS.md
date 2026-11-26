@@ -45,6 +45,17 @@ Anti-patterns:
 "This would take 2 weeks." (Say: "2 weeks human / ~1 hour AI-assisted.")
 Read more: https://garryslist.org/posts/boil-the-ocean
 
+### 2. Leave a Trail
+Long-running work should be checkable from the outside. Anyone looking in partway through (me, another agent, or you after a context reset) should be able to tell:
+
+* How far along it is
+* Whether it's still making progress or has stalled
+* How it ended
+
+Output that only reaches a terminal or a `tail` doesn't meet that bar. A timestamped log at a known path, with progress shown as done/total, usually does.
+
+Scale the effort to the job, and use existing tools (`logging`, `tqdm`, `pv`). When you start something long, tell me how to check on it.
+
 ## Markdown Recommendations
 * Mermaid is good.  Use it where diagrams are needed. 
 
