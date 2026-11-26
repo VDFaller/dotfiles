@@ -50,17 +50,18 @@ ISSUE_FIELDS = """
   }
 """
 
-QUERY = f"""
-query($mine: String!, $review: String!, $issues: String!, $waiting: String!, $limit: Int!) {{
-  viewer {{ login }}
-  mine: search(query: $mine, type: ISSUE, first: $limit) {{ issueCount nodes {{ {PR_FIELDS} }} }}
-  review: search(query: $review, type: ISSUE, first: $limit) {{ issueCount nodes {{ {PR_FIELDS} }} }}
-  issues: search(query: $issues, type: ISSUE, first: $limit) {{ issueCount nodes {{ {ISSUE_FIELDS} }} }}
-  waiting: search(query: $waiting, type: ISSUE, first: $limit) {{
-    issueCount nodes {{ {PR_FIELDS} {ISSUE_FIELDS} }}
-  }}
-}}
+# One search per request, paginated in small pages. A single query with all four
+# searches at 50 results each blows past GitHub's ~10s GraphQL timeout (HTTP 502).
+SEARCH_QUERY = """
+query($q: String!, $first: Int!, $after: String) {
+  search(query: $q, type: ISSUE, first: $first, after: $after) {
+    issueCount
+    pageInfo { hasNextPage endCursor }
+    nodes { %s }
+  }
+}
 """
+PAGE_SIZE = 20
 
 
 def gh(*args: str) -> str:
@@ -78,6 +79,33 @@ def gh(*args: str) -> str:
             )
         )
     return out.stdout
+
+
+def search(q: str, fields: str, limit: int) -> dict:
+    """Run one GitHub search, paging until `limit` nodes; returns {issueCount, nodes}."""
+    nodes: list[dict] = []
+    after: str | None = None
+    count = 0
+    while len(nodes) < limit:
+        args = [
+            "api",
+            "graphql",
+            "-f",
+            f"query={SEARCH_QUERY % fields}",
+            "-f",
+            f"q={q}",
+            "-F",
+            f"first={min(PAGE_SIZE, limit - len(nodes))}",
+        ]
+        if after:
+            args += ["-f", f"after={after}"]
+        page = json.loads(gh(*args))["data"]["search"]
+        count = page["issueCount"]
+        nodes += [n for n in page["nodes"] if n]
+        if not page["pageInfo"]["hasNextPage"]:
+            break
+        after = page["pageInfo"]["endCursor"]
+    return {"issueCount": count, "nodes": nodes}
 
 
 def days_since(iso: str | None, now: datetime) -> int | None:
@@ -197,25 +225,27 @@ def main() -> None:
     login = gh("api", "user", "--jq", ".login").strip()
     now = datetime.now(UTC)
     since = (now - timedelta(days=args.waiting_days)).date().isoformat()
-    data = json.loads(
-        gh(
-            "api",
-            "graphql",
-            "-f",
-            f"query={QUERY}",
-            "-f",
-            f"mine=is:pr is:open archived:false author:{login}",
-            "-f",
-            f"review=is:pr is:open archived:false review-requested:{login}",
-            "-f",
-            f"issues=is:issue is:open archived:false assignee:{login}",
-            "-f",
-            f"waiting=is:open archived:false involves:{login} -author:{login} "
+    data = {
+        "mine": search(
+            f"is:pr is:open archived:false author:{login}", PR_FIELDS, args.limit
+        ),
+        "review": search(
+            f"is:pr is:open archived:false review-requested:{login}",
+            PR_FIELDS,
+            args.limit,
+        ),
+        "issues": search(
+            f"is:issue is:open archived:false assignee:{login}",
+            ISSUE_FIELDS,
+            args.limit,
+        ),
+        "waiting": search(
+            f"is:open archived:false involves:{login} -author:{login} "
             f"-assignee:{login} -review-requested:{login} updated:>={since} sort:updated-desc",
-            "-F",
-            f"limit={args.limit}",
-        )
-    )["data"]
+            PR_FIELDS + ISSUE_FIELDS,
+            args.limit,
+        ),
+    }
 
     result = {
         "login": login,
